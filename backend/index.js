@@ -1,21 +1,21 @@
-const Sequelize = require("sequelize");
-require('dotenv').config();
+const express = require("express");
+const sequelize = require("./config/db");
+const Article = require("./models/Article");
 
-const sequelize = new Sequelize(
-    process.env.DB_NAME, 
-    process.env.DB_USER, 
-    rocess.env.DB_PASSWORD, 
-    {
-        host: process.env.DB_HOST,
-        dialect: 'mysql'
-    });
+require("dotenv").config();
 
+const app = express();
+app.use(express.json());
 
-sequelize
-  .authenticate()
+const articleRoutes = require("./routes/article.routes");
+app.use("/articles", articleRoutes);
+
+sequelize.sync({ alter: true })
   .then(() => {
-    console.log("DATABASE CONNECTED");
+    console.log("Database connected");
   })
-  .catch((err) => {
-    console.log(err);
-  });
+  .catch(err => console.log(err));
+
+app.listen(3000, () => {
+  console.log("Server started on port http://localhost:3000");
+});

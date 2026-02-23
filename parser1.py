@@ -1,9 +1,18 @@
-from selenium import webdriver
 from bs4 import BeautifulSoup
 from time import sleep
 import json
 import os
+import requests
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 
+options = Options()
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 # Scraping part
 url = "https://www.err.ee/"
 
@@ -18,7 +27,6 @@ else:
 
 existing_urls = {item['url'] for item in output_data}
 
-driver = webdriver.Chrome()
 output_data = []
 
 driver.get(url)
@@ -67,11 +75,23 @@ for div in soup.find_all('div', class_='flex-row marker1 blc-threeblc'):
         
         print([category, pubdate, figcaption]) 
 
-        output_data.append({"name": name, "url": href, "image_url": image_url, "category": category, "pubdate": pubdate, "figcaption": figcaption})
+        api_url = "http://localhost:3000/articles"
 
-        with open("output.json", "w", encoding="utf-8") as f:
-            json.dump(output_data, f, ensure_ascii=False, indent=4)
+        data = {
+            "name": name,
+            "url": href,
+            "image_url": image_url_full,
+            "category": category,
+            "pubdate": pubdate,
+            "content": figcaption,
+            "source": "err.ee"
+        }
 
+        try:
+            response = requests.post(api_url, json=data)
+            print("Sent to backend:", response.status_code)
+        except Exception as e:
+            print("Error sending to backend:", e)
 
 driver.quit()
 print("Scraping and insertion complete.")
