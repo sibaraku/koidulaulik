@@ -1,15 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const Article = require("../models/Article");
+const articleController = require("../controllers/article.controller");
 
-
-router.get("/", async (req, res) => {
-  try {
-    const articles = await Article.findAll();
-    res.json(articles);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.get("/", articleController.getAllArticles);
+router.get("/latest", articleController.getLatestArticle);
+router.get("/:id", articleController.getArticleById);
 
 module.exports = router;
