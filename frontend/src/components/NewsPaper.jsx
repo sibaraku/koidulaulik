@@ -3,7 +3,7 @@ import Activity from "./Activity";
 import { useParams } from "react-router-dom";
 import { IoMdArrowDropright } from "react-icons/io";
 
-function DetailedActivity() {
+function NewsPaper() {
   let params = useParams();
   let filePath = params["id"];
 
@@ -12,10 +12,9 @@ function DetailedActivity() {
 
   return (
     <div className="flex items-center justify-center h-dvh overflow-hidden max-w-5xl mx-auto gap-4">
-      <Activity isPinned={false} />
-      <div className="w-1/2 p-4 h-[50lvh] overflow-y-auto">
+      <div className="w-1/2 p-4 h-[50lvh] overflow-y-auto bg-newspaper rounded-lg border-2 border-black">
         <div className="p-4 rounded-lg border-2 border-darkbrown mb-4">
-          <h2 className="logo-small mb-4 text-right text-blue">Koidulaulik</h2>
+          <h2 className="logo-small">NewsPaper</h2>
           <h2 className="text-2xl font-semibold text-right text-black font-[kenia] font-regular">
             Are you interested in this event?
           </h2>
@@ -90,15 +89,8 @@ function DetailedActivity() {
           </div>
         )}
       </div>
-      <div className="w-80">
-        <img
-          src="/koidulaulik.png"
-          alt=""
-          className="w-full h-full object-cover"
-        />
-      </div>
     </div>
   );
 }
 
-export default DetailedActivity;
+export default NewsPaper;

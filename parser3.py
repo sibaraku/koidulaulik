@@ -4,12 +4,13 @@ from time import sleep
 import json
 import os
 from urllib.parse import urljoin
+import re
 
 # Scraping part
 url = "https://rahvakultuur.ee/mis-toimub/"
 
-if os.path.exists("blog.json"):
-    with open("blog.json", "r", encoding="utf-8") as f:
+if os.path.exists("event.json"):
+    with open("event.json", "r", encoding="utf-8") as f:
         try:
             output_data = json.load(f)
         except json.JSONDecodeError:
@@ -62,7 +63,8 @@ def get_posts(url):
         soup = BeautifulSoup(post_response, "html.parser")
         
         content_div = soup.find(class_="excerpt")
-        content = content_div.find("span").get_text(strip=True)
+        print(link)
+        content = content_div.find("p").get_text(strip=True)
 
         item = {
             "name": title,
@@ -71,7 +73,7 @@ def get_posts(url):
             "content": content
         }
         output_data.append(item)
-        with open("blog.json", "w", encoding="utf-8") as f:
+        with open("event.json", "w", encoding="utf-8") as f:
             json.dump(output_data, f, ensure_ascii=False, indent=4)
         existing_urls.add(link)
         print(f"Added: {title}, {link}, {img_url}, {content:30}...")
@@ -80,12 +82,16 @@ def get_posts(url):
 
 
 while True:
-    next_btn = soup.find("a", class_="next")
+    next_btn = soup.find("a", class_="next page-numbers")
     
     if next_btn:
         next_url = next_btn['href']
         driver.get(next_url)
         get_posts(next_url)
+        driver.get(next_url)
+        sleep(2)
+        post_response = driver.page_source
+        soup = BeautifulSoup(post_response, "html.parser")
         print("Navigated to next page:", next_url)
     else:
         print("No more pages to scrape.")

@@ -1,5 +1,6 @@
 blog.json
 output.json
+event.json
 /backend/node_modules/
 /backend/.env
 /frontend/node_modules/
