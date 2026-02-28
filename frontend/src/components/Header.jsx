@@ -10,16 +10,16 @@ function Header() {
         <img src="/logoSmall.svg" alt="Logo" />
       </a>
 
-      <nav id="menu">
-        {/* <Link to="/news" className="menuItem">
+      <nav id="menu" className="flex items-center gap-10">
+        <Link to="/news" className="p1 text-darkbrown">
           News
-        </Link> */}
-        <Link to="/activities" className="menuItem">
+        </Link>
+        <Link to="/activities" className="p1 text-darkbrown">
           Activities
         </Link>
-        {/* <Link to="/art" className="menuItem">
+        <Link to="/art" className="p1 text-darkbrown">
           Art
-        </Link> */}
+        </Link>
       </nav>
     </header>
   );

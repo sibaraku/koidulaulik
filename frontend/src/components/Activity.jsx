@@ -1,12 +1,16 @@
 import { useState } from "react";
 
-function Activity() {
+function Activity(props) {
   return (
     <div className={`shadow-md p-6 bg-activity w-80 relative`}>
-      <div className="w-15 h-15 absolute -top-3 left-30">
-        <img className="w-full h-full" src="/pin.svg" alt="" />
-      </div>
-      <h2 className="text-2xl font-semibold mb-2 mt-7 text-center text-black font-[condiment] font-regular">
+      {props.isPinned && (
+        <div className="w-15 h-15 absolute -top-3 left-30">
+          <img className="w-full h-full" src="/pin.svg" alt="" />
+        </div>
+      )}
+      <h2
+        className={`${props.isPinned ? "mt-7" : ""} text-2xl font-semibold mb-2 text-center text-black font-[condiment] font-regular`}
+      >
         Startup Day
       </h2>
       <img

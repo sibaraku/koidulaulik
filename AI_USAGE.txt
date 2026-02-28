@@ -1,0 +1,41 @@
+Prompt 1:
+
+Kirjeldus:
+Tahaksin teha inventory'it, ja mõtlesin esialgu kasutada tabelit, aga ma polnud kindel, et see on parem variant, seega küsisin ChatGPT
+
+Prompt
+i wanna make an inventory with react and vite so how can i add this should i use a table or smth else
+i wanna have smth like in the image but im not sure how many squares there will be
+<table className="table-auto w-full text-left border-collapse border border-gray-300">
+          <tr>
+            <th className="border border-darkbrown">Firstname</th>
+            <th>Lastname</th>
+            <th>Age</th>
+          </tr>
+          <tr>
+            <td>Luca</td>
+            <td>Rossi</td>
+            <td>24</td>
+          </tr>
+          <tr>
+            <td>Sophie</td>
+            <td>Dubois</td>
+            <td>32</td>
+          </tr>
+          <tr>
+            <td>Sam</td>
+            <td>Watson</td>
+            <td>41</td>
+          </tr>
+        </table>
+
+Vastus:
+https://chatgpt.com/s/t_699f507f062c8191af5922ce541dddbc
+
+Prompt 2:
+
+Kirjeldus:
+Tahatsin teha ühe klassi teksti jaoks
+
+Prompt:
+https://chatgpt.com/s/t_699f50a6c410819189287e669e8f7211

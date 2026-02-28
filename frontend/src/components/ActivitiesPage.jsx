@@ -10,9 +10,9 @@ function ActivitiesPage() {
           {/* <p className="text-lg mb-8">Explore our exciting activities!</p> */}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 m-4 overflow-y-auto h-[60lvh]">
-          <Activity />
-          <Activity />
-          <Activity />
+          <Activity isPinned={true} />
+          <Activity isPinned={true} />
+          <Activity isPinned={true} />
         </div>
       </div>
     </div>
