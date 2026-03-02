@@ -8,12 +8,13 @@ import DetailedActivity from "./components/DetailedActivity";
 import InventoryPage from "./components/InventoryPage";
 import NewsPaper from "./components/NewsPaper";
 import Auth from "./components/Auth";
+import Account from "./components/Account";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <div>
+    <>
       <Header />
       <Routes>
         <Route path="/" element={<LandingPage />} />
@@ -22,8 +23,9 @@ function App() {
         <Route path="/inventory" element={<InventoryPage />} />
         <Route path="/news-paper/:id" element={<NewsPaper />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
-    </div>
+    </>
   );
 }
 
