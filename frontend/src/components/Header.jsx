@@ -11,9 +11,6 @@ function Header() {
       </a>
 
       <nav id="menu" className="flex items-center gap-10">
-        <Link to="/news" className="p1 text-darkbrown">
-          News
-        </Link>
         <Link to="/activities" className="p1 text-darkbrown">
           Activities
         </Link>

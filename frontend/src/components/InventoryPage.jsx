@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const { VITE_API_URL } = import.meta.env;
 
 function InventoryPage() {
   const columns = 6;
   const rows = 4;
   const totalSlots = columns * rows;
+
+  const [error, setError] = useState();
 
   const [items, setItems] = useState([
     {
@@ -25,6 +29,39 @@ function InventoryPage() {
   ]);
 
   const [selectedItem, setSelectedItem] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${VITE_API_URL}inventory/user/${1}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          setError({
+            title: "Problems with backend",
+            message: errorMessage || "Invalid email or password.",
+          });
+          return;
+        }
+
+        console.log(data);
+        setActivity(data);
+      } catch (error) {
+        console.log(error);
+        setError({
+          title: "Server Unreachable",
+          message: "Failed to add user, please try again later.",
+        });
+        return;
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="flex items-center justify-center h-dvh overflow-hidden">

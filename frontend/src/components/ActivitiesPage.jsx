@@ -5,7 +5,15 @@ const { VITE_API_URL } = import.meta.env;
 
 function ActivitiesPage() {
   const [activities, setActivities] = useState();
+  const [loaded, setLoaded] = useState(0);
   const [error, setError] = useState(null);
+
+  const handleLoadedActivity = () => {
+    setLoaded((prev) => prev + 1);
+  };
+
+  const allLoaded = activities && activities.length * 2 === loaded;
+  console.log(allLoaded);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,16 +50,28 @@ function ActivitiesPage() {
 
   return (
     <div className="flex items-center justify-center h-dvh overflow-hidden">
-      <div className="flex flex-col items-center bg-lightbrown w-dvw mb-10 m-30 rounded-lg max-w-430">
+      {!allLoaded && activities && (
+        <div>
+          Loaded {loaded} of {activities.length * 2}
+        </div>
+      )}
+      <div
+        className={`flex flex-col items-center bg-lightbrown w-dvw mb-10 m-30 rounded-lg max-w-430 ${!allLoaded && "hidden"}`}
+      >
         <div className="bg-darkbrown p-8 text-center rounded-b-lg">
           <h1 className="h1 text-4xl font-bold text-lightbrown">Activities</h1>
           {/* <p className="text-lg mb-8">Explore our exciting activities!</p> */}
         </div>
-        <div class="h-[60vh] overflow-y-auto">
+        <div className="h-[60vh] overflow-y-auto">
           <div className="columns-3 gap-8 m-4">
             {activities &&
               activities.map((activ) => (
-                <Activity key={activ.id} isPinned={true} activity={activ} />
+                <Activity
+                  key={activ.id}
+                  isPinned={true}
+                  activity={activ}
+                  onLoaded={handleLoadedActivity}
+                />
               ))}
           </div>
         </div>

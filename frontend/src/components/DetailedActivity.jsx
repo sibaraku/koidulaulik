@@ -1,18 +1,67 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Activity from "./Activity";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { IoMdArrowDropright } from "react-icons/io";
+
+const { VITE_API_URL } = import.meta.env;
 
 function DetailedActivity() {
   let params = useParams();
   let filePath = params["id"];
+  const [error, setError] = useState();
+  const [activity, setActivity] = useState();
+
+  const location = useLocation();
+
+  const isImage = location.state.image;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${VITE_API_URL}events/${filePath}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          setError({
+            title: "Problems with backend",
+            message: errorMessage || "Invalid email or password.",
+          });
+          return;
+        }
+
+        console.log(data);
+        setActivity(data);
+      } catch (error) {
+        console.log(error);
+        setError({
+          title: "Server Unreachable",
+          message: "Failed to add user, please try again later.",
+        });
+        return;
+      }
+    };
+    fetchData();
+  }, []);
 
   const [isInterested, setIsInterested] = useState(false);
   const [additionalData, setAdditionalData] = useState(null);
 
   return (
     <div className="flex items-center justify-center h-dvh overflow-hidden max-w-5xl mx-auto gap-4">
-      <Activity isPinned={false} />
+      {isImage ? (
+        <img
+          src={"https://kultuuriaken.tartu.ee/" + activity?.img_url}
+          alt=""
+          className="w-100"
+        />
+      ) : (
+        <Activity isPinned={false} activity={activity} />
+      )}
       <div className="w-1/2 p-4 h-[50lvh] overflow-y-auto">
         <div className="p-4 rounded-lg border-2 border-darkbrown mb-4">
           <h2 className="logo-small mb-4 text-right text-blue">Koidulaulik</h2>
@@ -69,16 +118,46 @@ function DetailedActivity() {
             <h2 className="text-2xl font-semibold mb-2 text-right text-blue font-[kenia] font-regular">
               Koidulaulik
             </h2>
-            {additionalData ? (
-              <h2 className="text-2xl font-semibold text-right text-black font-[kenia] font-regular">
-                {additionalData}
-              </h2>
+            {isImage ? (
+              <div className="text-right text-black font-[kenia] font-regular space-y-2 text-2xl leading-relaxed">
+                <p className="font-semibold text-2xl">{activity.name}</p>
+
+                <p className="text-xl">{activity.description}</p>
+
+                <p className="text-xl">
+                  {activity.event_date_start === activity.event_date_end
+                    ? activity.event_date_start
+                    : `${activity.event_date_start} – ${activity.event_date_end}`}
+                </p>
+
+                <p className="text-xl">
+                  {activity.event_time_start.slice(0, 5)} –{" "}
+                  {activity.event_time_end.slice(0, 5)}
+                </p>
+
+                <p className="text-xl">Tartu, Estonia</p>
+
+                <p className="text-xl">{activity.price}</p>
+
+                <p className="text-xl">
+                  You can find more information{" "}
+                  <a
+                    href={activity.url}
+                    className="text-blue underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    here
+                  </a>
+                  .
+                </p>
+              </div>
             ) : (
               <h2 className="text-2xl font-semibold text-right text-black font-[kenia] font-regular">
                 Sorry, I do not have any more information, but you can find out
                 more about this event{" "}
                 <a
-                  href="https://www.startupday.ee"
+                  href={activity.url}
                   className={"text-blue"}
                   target="_blank"
                   rel="noopener noreferrer"
